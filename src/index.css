@@ -1,0 +1,49 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: Inter, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  html[lang='fa'] body,
+  html[lang='ps'] body {
+    font-family: Vazir, Inter, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-arc-background text-arc-text antialiased;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-arc-text;
+  }
+}
+
+@layer components {
+  .text-heading-xl {
+    @apply text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl;
+  }
+
+  .text-heading-lg {
+    @apply text-3xl font-bold tracking-tight sm:text-4xl;
+  }
+
+  .text-body {
+    @apply text-base leading-7 text-arc-subtext;
+  }
+
+  .text-small {
+    @apply text-sm leading-6 text-arc-subtext;
+  }
+}
