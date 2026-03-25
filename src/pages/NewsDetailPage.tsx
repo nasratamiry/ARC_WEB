@@ -1,10 +1,12 @@
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useNewsDetail } from '../hooks'
+import { useLocalizedPath, useNewsDetail } from '../hooks'
+import Seo from '../shared/components/Seo'
 import { Badge, Button, Card, PageHeader, SectionContainer } from '../shared/ui'
 
 function NewsDetailPage() {
   const { t, i18n } = useTranslation()
+  const { withLang } = useLocalizedPath()
   const { slug } = useParams<{ slug: string }>()
   const { data, loading, error } = useNewsDetail(slug, { enabled: Boolean(slug) })
 
@@ -17,10 +19,11 @@ function NewsDetailPage() {
 
   return (
     <SectionContainer>
+      <Seo title={data?.title ?? t('nav.news')} description={data?.excerpt ?? t('news.description')} />
       <div className="mb-6">
-        <Link to="/news">
-          <Button variant="outline">{t('news.backToNews')}</Button>
-        </Link>
+        <Button to={withLang('/news')} variant="secondary">
+          {t('news.backToNews')}
+        </Button>
       </div>
 
       {loading ? (

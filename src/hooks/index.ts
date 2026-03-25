@@ -1,4 +1,6 @@
+export { useInView } from './useInView'
 export { useLatestNews } from './useLatestNews'
+export { SUPPORTED_LANGUAGES, useLocalizedPath } from './useLocalizedPath'
 export { useNews } from './useNews'
 export { useNewsDetail } from './useNewsDetail'
 export { usePartners } from './usePartners'

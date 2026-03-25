@@ -2,6 +2,7 @@ import { type ChangeEvent, type FormEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { sendMessage } from '../services/contact'
 import { ApiError } from '../services/api'
+import Seo from '../shared/components/Seo'
 import type { ContactPayload } from '../types/api'
 import { Button, Card, PageHeader, SectionContainer } from '../shared/ui'
 
@@ -149,6 +150,7 @@ function ContactPage() {
 
   return (
     <SectionContainer>
+      <Seo title={t('nav.contact')} description={t('contact.description')} />
       <PageHeader
         eyebrow={t('contact.eyebrow')}
         title={t('contact.title')}
@@ -163,13 +165,21 @@ function ContactPage() {
           <div className="mt-8 space-y-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-primary-dark">{t('contact.emailLabel')}</p>
-              <a href="mailto:info@aprcrail.com" className="mt-1 inline-block text-arc-text transition hover:text-primary-dark">
+              <a
+                href="mailto:info@aprcrail.com"
+                dir="ltr"
+                className="mt-1 inline-block text-left text-arc-text transition hover:text-primary-dark"
+              >
                 info@aprcrail.com
               </a>
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-primary-dark">{t('contact.phoneLabel')}</p>
-              <a href="tel:+93798333344" className="mt-1 inline-block text-arc-text transition hover:text-primary-dark">
+              <a
+                href="tel:+93798333344"
+                dir="ltr"
+                className="mt-1 inline-block text-left text-arc-text transition hover:text-primary-dark"
+              >
                 +93798333344
               </a>
             </div>

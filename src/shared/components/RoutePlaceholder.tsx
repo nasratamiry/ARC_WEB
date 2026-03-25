@@ -26,7 +26,7 @@ function RoutePlaceholder({ title }: RoutePlaceholderProps) {
           </p>
           <div className="mt-5 flex gap-3">
             <Button>Primary</Button>
-            <Button variant="outline">Outline</Button>
+            <Button variant="secondary">Secondary</Button>
           </div>
         </Card>
       </div>

@@ -1,5 +1,6 @@
 import { Badge, Card, PageHeader, SectionContainer } from '../shared/ui'
 import { useTranslation } from 'react-i18next'
+import Seo from '../shared/components/Seo'
 
 function ServicesPage() {
   const { t } = useTranslation()
@@ -38,6 +39,7 @@ function ServicesPage() {
 
   return (
     <SectionContainer>
+      <Seo title={t('nav.services')} description={t('services.description')} />
       <PageHeader
         eyebrow={t('services.eyebrow')}
         title={t('services.title')}

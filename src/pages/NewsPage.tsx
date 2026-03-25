@@ -1,10 +1,12 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useNews } from '../hooks'
+import { useLocalizedPath, useNews } from '../hooks'
+import Seo from '../shared/components/Seo'
 import { Badge, Button, Card, PageHeader, SectionContainer } from '../shared/ui'
 
 function NewsPage() {
   const { t, i18n } = useTranslation()
+  const { withLang } = useLocalizedPath()
   const [searchParams, setSearchParams] = useSearchParams()
   const pageParam = Number(searchParams.get('page') ?? '1')
   const currentPage = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1
@@ -29,6 +31,7 @@ function NewsPage() {
 
   return (
     <SectionContainer>
+      <Seo title={t('nav.news')} description={t('news.description')} />
       <PageHeader
         eyebrow={t('news.eyebrow')}
         title={t('news.title')}
@@ -59,7 +62,7 @@ function NewsPage() {
         <>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data?.results.map((item) => (
-              <Link key={item.slug} to={`/news/${item.slug}`} className="group block">
+              <Link key={item.slug} to={withLang(`/news/${item.slug}`)} className="group block">
                 <Card className="h-full overflow-hidden p-0 transition-shadow group-hover:shadow-soft">
                   <div className="h-48 bg-arc-muted">
                     <img src={item.image} alt={item.title} className="h-full w-full object-cover" loading="lazy" />
@@ -80,13 +83,13 @@ function NewsPage() {
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-3">
-            <Button variant="outline" onClick={() => handlePageChange(currentPage - 1)} disabled={!hasPrevious}>
+            <Button variant="secondary" onClick={() => handlePageChange(currentPage - 1)} disabled={!hasPrevious}>
               {t('news.previous')}
             </Button>
             <span className="text-small rounded-xl border border-arc-border bg-white px-4 py-2">
               {t('news.page')} {currentPage}
             </span>
-            <Button variant="outline" onClick={() => handlePageChange(currentPage + 1)} disabled={!hasNext}>
+            <Button variant="secondary" onClick={() => handlePageChange(currentPage + 1)} disabled={!hasNext}>
               {t('news.next')}
             </Button>
           </div>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.com/en/</loc></url>
+  <url><loc>https://example.com/en/about</loc></url>
+  <url><loc>https://example.com/en/services</loc></url>
+  <url><loc>https://example.com/en/platform</loc></url>
+  <url><loc>https://example.com/en/news</loc></url>
+  <url><loc>https://example.com/en/partners</loc></url>
+  <url><loc>https://example.com/en/contact</loc></url>
+  <url><loc>https://example.com/fa/</loc></url>
+  <url><loc>https://example.com/fa/about</loc></url>
+  <url><loc>https://example.com/fa/services</loc></url>
+  <url><loc>https://example.com/fa/platform</loc></url>
+  <url><loc>https://example.com/fa/news</loc></url>
+  <url><loc>https://example.com/fa/partners</loc></url>
+  <url><loc>https://example.com/fa/contact</loc></url>
+  <url><loc>https://example.com/ps/</loc></url>
+  <url><loc>https://example.com/ps/about</loc></url>
+  <url><loc>https://example.com/ps/services</loc></url>
+  <url><loc>https://example.com/ps/platform</loc></url>
+  <url><loc>https://example.com/ps/news</loc></url>
+  <url><loc>https://example.com/ps/partners</loc></url>
+  <url><loc>https://example.com/ps/contact</loc></url>
+  <url><loc>https://example.com/uz/</loc></url>
+  <url><loc>https://example.com/uz/about</loc></url>
+  <url><loc>https://example.com/uz/services</loc></url>
+  <url><loc>https://example.com/uz/platform</loc></url>
+  <url><loc>https://example.com/uz/news</loc></url>
+  <url><loc>https://example.com/uz/partners</loc></url>
+  <url><loc>https://example.com/uz/contact</loc></url>
+</urlset>

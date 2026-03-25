@@ -15,7 +15,11 @@
   }
 
   body {
-    @apply bg-arc-background text-arc-text antialiased;
+    @apply bg-white text-arc-text antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   #root {
@@ -28,6 +32,14 @@
   h4 {
     @apply text-arc-text;
   }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
 }
 
 @layer components {
@@ -36,7 +48,7 @@
   }
 
   .text-heading-lg {
-    @apply text-3xl font-bold tracking-tight sm:text-4xl;
+    @apply text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl;
   }
 
   .text-body {
@@ -45,5 +57,60 @@
 
   .text-small {
     @apply text-sm leading-6 text-arc-subtext;
+  }
+
+  .arc-section-muted {
+    @apply bg-gradient-to-b from-primary/[0.06] via-white to-white;
+  }
+
+  .arc-glass {
+    @apply border border-white/40 bg-white/70 shadow-soft backdrop-blur-md;
+  }
+
+  .animate-partners-marquee {
+    animation: partners-marquee 32s linear infinite;
+  }
+
+  .animate-partners-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .animate-fade-in {
+    animation: fade-in-up 520ms ease-out both;
+  }
+}
+
+@keyframes partners-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-progress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@layer components {
+  .animate-hero-progress {
+    animation: hero-progress 7000ms linear both;
   }
 }

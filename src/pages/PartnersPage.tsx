@@ -1,5 +1,6 @@
 import { usePartners } from '../hooks'
 import { useTranslation } from 'react-i18next'
+import Seo from '../shared/components/Seo'
 import { Button, Card, PageHeader, SectionContainer } from '../shared/ui'
 
 function PartnersPage() {
@@ -8,6 +9,7 @@ function PartnersPage() {
 
   return (
     <SectionContainer>
+      <Seo title={t('nav.partners')} description={t('partners.description')} />
       <PageHeader
         eyebrow={t('partners.eyebrow')}
         title={t('partners.title')}
@@ -32,7 +34,7 @@ function PartnersPage() {
         <Card>
           <p className="text-body text-red-600">{error}</p>
           <div className="mt-4">
-            <Button variant="outline" onClick={() => void refetch()}>
+            <Button variant="secondary" onClick={() => void refetch()}>
               {t('partners.retry')}
             </Button>
           </div>

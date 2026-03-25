@@ -1,12 +1,42 @@
 import type { HTMLAttributes, ReactNode } from 'react'
+import { useInView } from '../../hooks'
+
+export type SectionVariant = 'default' | 'muted' | 'tint'
 
 type SectionContainerProps = {
   children: ReactNode
+  variant?: SectionVariant
+  animate?: boolean
 } & HTMLAttributes<HTMLElement>
 
-function SectionContainer({ children, className = '', ...props }: SectionContainerProps) {
+function SectionContainer({
+  children,
+  className = '',
+  variant = 'default',
+  animate = true,
+  ...props
+}: SectionContainerProps) {
+  const { ref, isInView } = useInView<HTMLElement>()
+
+  const variantClass =
+    variant === 'muted'
+      ? 'arc-section-muted'
+      : variant === 'tint'
+        ? 'bg-gradient-to-b from-primary/[0.08] via-primary/[0.03] to-white'
+        : ''
+
+  const motionClass = animate
+    ? `motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+      }`
+    : ''
+
   return (
-    <section className={`mx-auto w-full max-w-layout px-4 py-section sm:px-6 lg:px-8 ${className}`.trim()} {...props}>
+    <section
+      ref={ref}
+      className={`mx-auto w-full max-w-layout px-4 py-section sm:px-6 lg:px-8 ${variantClass} ${motionClass} ${className}`.trim()}
+      {...props}
+    >
       {children}
     </section>
   )
