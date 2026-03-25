@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import Button from './Button'
 
@@ -28,15 +27,6 @@ function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
       />
     </svg>
   )
-}
-
-function slideBackground(image: string): CSSProperties {
-  return {
-    backgroundImage: `url(${image})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  }
 }
 
 function overlayClass(tone: HeroSlide['overlay']): string {
@@ -82,6 +72,9 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
     >
       {slides.map((slide, index) => {
         const isActive = index === active
+        const base = slide.image.replace(/\.(png|jpg|jpeg|webp|avif)$/i, '')
+        const avif = `${base}.avif`
+        const webp = `${base}.webp`
         return (
           <div
             key={slide.id}
@@ -94,8 +87,21 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
               className={`absolute inset-0 transition-transform duration-[900ms] ease-out ${
                 isActive ? 'scale-100' : 'scale-[1.06]'
               }`}
-              style={slideBackground(slide.image)}
-            />
+              aria-hidden
+            >
+              <picture>
+                <source srcSet={avif} type="image/avif" />
+                <source srcSet={webp} type="image/webp" />
+                <img
+                  src={slide.image}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                />
+              </picture>
+            </div>
             <div className={`absolute inset-0 ${overlayClass(slide.overlay)}`} aria-hidden />
             <div className="relative z-[2] mx-auto flex min-h-[calc(100dvh-5rem)] w-full max-w-layout flex-col justify-center px-4 pb-24 pt-28 sm:px-6 lg:px-8">
               <div
