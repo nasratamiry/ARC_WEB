@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useLocalizedPath } from '../../hooks'
 import { useAuth } from '../../auth/AuthContext'
-import { CircleUserRound, X } from 'lucide-react'
+import { CircleUserRound, Menu, X } from 'lucide-react'
 import LanguageMenu from './LanguageMenu'
 
 function isHomePath(pathname: string) {
@@ -76,10 +77,15 @@ function Navbar() {
   }
 
   const mobileLink = ({ isActive }: { isActive: boolean }) => {
-    return `flex min-h-11 items-center rounded-xl px-4 py-2.5 text-base font-medium transition-colors duration-200 ${
-      isActive ? 'bg-primary/15 text-primary' : 'text-arc-subtext hover:bg-arc-muted hover:text-arc-text'
+    return `flex min-h-[3.25rem] items-center px-5 text-lg font-medium tracking-tight transition-colors duration-200 ${
+      isActive ? 'text-primary' : 'text-arc-text hover:text-primary'
     }`
   }
+
+  const mobileIconBtn =
+    onHero && !isOpen
+      ? 'border-white/30 text-white hover:bg-white/10 hover:text-primary'
+      : 'border-arc-border text-arc-text hover:border-primary hover:text-primary'
 
   const shellClass =
     onHero && !isOpen
@@ -97,28 +103,101 @@ function Navbar() {
 
   const drawerSideClass = isRtl ? 'left-0' : 'right-0'
 
-  return (
-    <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${shellClass}`}>
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <Link to={withLang('/')} className="md:hidden">
-          <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-xl ring-2 ring-primary/40">
-            <img src="/arc-logo.png" alt="ARC" className="h-full w-full object-cover" />
-          </span>
-        </Link>
+  const profileLinkClass = `inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 ${mobileIconBtn}`
+
+  const mobileDrawer =
+    isOpen &&
+    createPortal(
+      <>
         <button
           type="button"
-          className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border px-3 text-sm font-medium transition-colors md:hidden ${
-            onHero && !isOpen
-              ? 'border-white/30 text-white hover:bg-white/10'
-              : 'border-arc-border text-arc-text hover:border-primary hover:text-primary'
-          }`}
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-expanded={isOpen}
-          aria-controls="mobile-nav-drawer"
+          className="fixed inset-0 z-[90] bg-slate-950/50 backdrop-blur-[3px] transition-opacity duration-300"
+          aria-label={t('nav.closeMenu')}
+          onClick={() => setIsOpen(false)}
+        />
+        <div
+          id="mobile-nav-drawer"
+          role="dialog"
+          aria-modal="true"
           aria-label={t('nav.menu')}
+          className={`fixed inset-y-0 z-[100] flex w-full max-w-full flex-col bg-white shadow-2xl transition-transform duration-300 ease-out sm:max-w-md ${drawerSideClass} ${drawerTransform}`}
+          dir={isRtl ? 'rtl' : 'ltr'}
         >
-          {isOpen ? <X className="h-5 w-5" aria-hidden /> : '☰'}
-        </button>
+          <div className="flex items-center justify-between gap-4 border-b border-arc-border/80 px-5 py-4">
+            <Link
+              to={withLang('/')}
+              className="inline-flex shrink-0 items-center gap-2"
+              onClick={() => setIsOpen(false)}
+              aria-label={t('nav.home')}
+            >
+              <span className="relative flex h-11 w-11 overflow-hidden rounded-xl ring-2 ring-primary/35">
+                <img src="/arc-logo.png" alt="" className="h-full w-full object-cover" />
+              </span>
+            </Link>
+            <button
+              type="button"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-arc-border text-arc-text transition hover:border-primary hover:text-primary"
+              onClick={() => setIsOpen(false)}
+              aria-label={t('nav.closeMenu')}
+            >
+              <X className="h-5 w-5" aria-hidden />
+            </button>
+          </div>
+          <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-2">
+            <ul className="divide-y divide-arc-border/60">
+              {navItems.map((item) => (
+                <li key={item.to}>
+                  <NavLink to={item.to} end={item.end} className={mobileLink} onClick={() => setIsOpen(false)}>
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="border-t border-arc-border/80 bg-arc-muted/30 px-5 py-5">
+            <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-arc-subtext">{t('nav.language')}</p>
+            <LanguageMenu
+              variant="light"
+              className="relative z-[1] w-full [&>button]:!min-h-12 [&>button]:rounded-xl [&_.absolute]:!z-[110]"
+              menuAlign="bottom-center"
+            />
+          </div>
+        </div>
+      </>,
+      document.body,
+    )
+
+  return (
+    <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${shellClass}`}>
+      <nav className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="flex w-full min-w-0 items-center justify-between gap-3 md:hidden">
+          <Link to={withLang('/')} className="shrink-0" aria-label={t('nav.home')}>
+            <span className="relative flex h-10 w-10 overflow-hidden rounded-xl ring-2 ring-primary/40">
+              <img src="/arc-logo.png" alt="ARC" className="h-full w-full object-cover" />
+            </span>
+          </Link>
+          <div className={`flex shrink-0 items-center ${isUzbek ? 'gap-0.5' : 'gap-1.5'}`}>
+            {auth.status === 'authenticated' ? (
+              <Link to={withLang('/profile')} className={profileLinkClass} aria-label={t('nav.profile')}>
+                <CircleUserRound className="h-5 w-5" aria-hidden />
+              </Link>
+            ) : (
+              <Link to={withLang('/login')} className={profileLinkClass} aria-label={t('nav.login')}>
+                <CircleUserRound className="h-5 w-5" aria-hidden />
+              </Link>
+            )}
+            <button
+              type="button"
+              className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border transition-colors ${mobileIconBtn}`}
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav-drawer"
+              aria-label={t('nav.menu')}
+            >
+              {isOpen ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" strokeWidth={2} aria-hidden />}
+            </button>
+          </div>
+        </div>
 
         <div className="hidden w-full grid-cols-[auto_1fr_auto] items-center gap-2 md:grid lg:gap-3">
           <div className={`order-3 flex items-center justify-end ${isUzbek ? 'gap-1' : 'gap-2'}`}>
@@ -176,72 +255,7 @@ function Navbar() {
         </div>
       </nav>
 
-      {isOpen ? (
-        <div className="md:hidden">
-          <button
-            type="button"
-            className="fixed inset-0 z-[55] bg-slate-900/45 backdrop-blur-[2px]"
-            aria-label={t('nav.closeMenu')}
-            onClick={() => setIsOpen(false)}
-          />
-          <div
-            id="mobile-nav-drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-label={t('nav.menu')}
-            className={`fixed inset-y-0 z-[60] flex w-full max-w-[min(20rem,calc(100vw-3rem))] flex-col border-arc-border/80 bg-white shadow-xl transition-transform duration-300 ease-out ${drawerSideClass} ${drawerTransform}`}
-            dir={isRtl ? 'rtl' : 'ltr'}
-          >
-            <div className="flex items-center justify-between gap-3 border-b border-arc-border/70 px-4 py-3">
-              <span className="text-sm font-semibold uppercase tracking-widest text-arc-subtext">{t('nav.menu')}</span>
-              <button
-                type="button"
-                className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-arc-border text-arc-text transition hover:border-primary hover:text-primary"
-                onClick={() => setIsOpen(false)}
-                aria-label={t('nav.closeMenu')}
-              >
-                <X className="h-5 w-5" aria-hidden />
-              </button>
-            </div>
-            <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3">
-              <ul className="space-y-1">
-                {navItems.map((item) => (
-                  <li key={item.to}>
-                    <NavLink to={item.to} end={item.end} className={mobileLink} onClick={() => setIsOpen(false)}>
-                      {item.label}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div className="border-t border-arc-border/70 p-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-arc-subtext">{t('nav.language')}</p>
-              <LanguageMenu variant="light" className="w-full [&>button]:!min-h-11" />
-              <div className="mt-3">
-                {auth.status === 'authenticated' ? (
-                  <Link
-                    to={withLang('/profile')}
-                    className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-arc-border px-4 text-sm font-semibold text-arc-text transition hover:border-primary hover:text-primary"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <CircleUserRound className="h-5 w-5" aria-hidden />
-                    {t('nav.profile')}
-                  </Link>
-                ) : (
-                  <Link
-                    to={withLang('/login')}
-                    className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-arc-border px-4 text-sm font-semibold text-arc-text transition hover:border-primary hover:text-primary"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <CircleUserRound className="h-5 w-5" aria-hidden />
-                    {t('nav.login')}
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {mobileDrawer}
     </header>
   )
 }
