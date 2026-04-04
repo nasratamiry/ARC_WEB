@@ -1,0 +1,10 @@
+# Netlify: build from repo root (connect GitHub — no zip needed)
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# React Router / client-side routes — same rule as public/_redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
