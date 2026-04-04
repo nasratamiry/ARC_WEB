@@ -27,7 +27,7 @@ const uz = {
     linkGroupCompany: 'Kompaniya',
     linkGroupPlatform: 'Platforma va yordam',
     downloadApps: 'Ilovani yuklab olish',
-    contact: 'Aloqa',
+    contact: 'Aloqa maʼlumotlari',
     location: 'Kobul, Afgoniston',
     rights: 'Afgoniston Temir Yol Konsortsiumi. Barcha huquqlar himoyalangan.',
     designedBy: 'Dizayn qilingan',
@@ -63,7 +63,7 @@ const uz = {
     service1Title: 'Yuk poyezd operatsiyalari',
     service1Description: 'Asosiy savdo koridorlarida tovarlarni ishonchli tashish uchun professional yuk poyezd xizmatlari.',
     service2Title: 'Logistika va savdoni yengillashtirish',
-    service2Description: 'Bojxona, yuk boshqaruvi va chegaraviy harakatlarni soddalashtirish.',
+    service2Description: 'Yuk boshqaruvi, temir yo‘l bilan bog‘liq logistika va mintaqaviy yo‘nalishlarda chegaraviy harakatlarni muvofiqlashtirish.',
     service3Title: 'Investitsiya va hamkorlik',
     service3Description: 'Tuzilmali hamkorlik modellar orqali ichki va xalqaro kapitalni jalb qilish.',
     latestEyebrow: 'Songgi yangiliklar',
@@ -217,7 +217,7 @@ const uz = {
         1: 'Xalqaro savdo shartnomalarida qo‘llaniladigan global standart qoidalardir.',
         2: 'Risk qaysi nuqtada sotuvchidan xaridorga o‘tishini belgilaydi.',
         3: 'Transport xarajatlari va logistika vazifalarini taqsimlaydi.',
-        4: 'Eksport va import bojxona mas’uliyatini aniqlashtiradi.',
+        4: 'Eksport va import bo‘yicha chegara va hujjatlar bo‘yicha majburiyatlarni tomonlar o‘rtasida aniqlashtiradi.',
         5: 'Savdo shartnomasi, to‘lov shartlari yoki mulk huquqini almashtirmaydi.',
         6: 'To‘g‘ri tanlangan term narx shaffofligi va yetkazib berish nazoratini oshiradi.',
       },
@@ -312,7 +312,7 @@ const uz = {
         name: 'Delivered At Place',
         transport: 'Har qanday transport',
         seller: 'Yukni belgilangan joyga tushirishga tayyor holatda yetkazadi.',
-        buyer: 'Tushirish, import bojxonasi va boj/soliqlarni bajaradi.',
+        buyer: 'Tushirish, import bojlari va soliq majburiyatlarini bajaradi.',
       },
       dpu: {
         name: 'Delivered at Place Unloaded',
@@ -323,7 +323,7 @@ const uz = {
       ddp: {
         name: 'Delivered Duty Paid',
         transport: 'Har qanday transport',
-        seller: 'Oxirigacha yetkazib berishni, jumladan import bojxona va to‘lovlarni to‘liq bajaradi.',
+        seller: 'Oxirigacha yetkazib berishni, jumladan import bojlari va tegishli to‘lovlarni to‘liq bajaradi.',
         buyer: 'Yukni manzilda qabul qiladi, operatsion yuklama minimal bo‘ladi.',
       },
     },
@@ -348,7 +348,7 @@ const uz = {
     cta: {
       title: 'To‘g‘ri Incoterm Tanlashda Yordam Kerakmi?',
       description:
-        'Savdo shartlarini yakunlashdan oldin transport turi, bojxona salohiyati va risk strategiyasiga mos termni tanlang.',
+        'Savdo shartlarini yakunlashdan oldin transport turi, operatsion salohiyat va risk strategiyasiga mos termni tanlang.',
       primary: 'ARC Jamoasi Bilan Bog‘lanish',
       secondary: 'ARC Xizmatlarini Ko‘rish',
     },

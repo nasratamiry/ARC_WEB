@@ -115,7 +115,10 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
                   isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
                 }`}
               >
-                <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/55 px-3 py-1.5 text-xs font-semibold tracking-[0.14em] text-white shadow-soft backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm md:text-base">
+                <p
+                  dir="auto"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/55 px-3 py-1.5 text-xs font-semibold tracking-[0.14em] text-white shadow-soft backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm md:text-base"
+                >
                   <Sparkles className="h-4 w-4 shrink-0 text-primary" aria-hidden />
                   {slide.eyebrow}
                 </p>

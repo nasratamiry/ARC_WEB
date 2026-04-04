@@ -176,7 +176,9 @@ function ContactPage() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-primary-dark">{t('contact.phoneLabel')}</p>
               <a
-                href="tel:+93798333344"
+                href="https://wa.me/93798333344"
+                target="_blank"
+                rel="noopener noreferrer"
                 dir="ltr"
                 className="mt-1 inline-block text-left text-arc-text transition hover:text-primary-dark"
               >

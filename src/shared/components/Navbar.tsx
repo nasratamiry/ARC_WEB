@@ -36,11 +36,19 @@ function Navbar() {
   ]
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const readScrollY = () =>
+      document.scrollingElement?.scrollTop ?? window.scrollY ?? document.documentElement.scrollTop ?? 0
+
+    const onScroll = () => setScrolled(readScrollY() > 20)
+
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     setIsOpen(false)
@@ -65,7 +73,8 @@ function Navbar() {
   }, [isOpen])
 
   const desktopLink = ({ isActive }: { isActive: boolean }) => {
-    const underlineBase = `relative rounded-xl ${isUzbek ? 'px-2 py-2 text-xs lg:px-2.5' : 'px-2.5 py-2 text-sm lg:px-3'} font-medium transition-all duration-300 after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:opacity-0 after:shadow-[0_0_10px_rgba(0,226,255,0.45)] after:transition-all after:duration-300 hover:after:scale-x-100 hover:after:opacity-100 lg:after:inset-x-3`
+    const underlineOrigin = isRtl ? 'after:origin-right' : 'after:origin-left'
+    const underlineBase = `relative rounded-xl ${isUzbek ? 'px-2 py-2 text-xs lg:px-2.5' : 'px-2.5 py-2 text-sm lg:px-3'} font-medium transition-all duration-300 after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 ${underlineOrigin} after:scale-x-0 after:rounded-full after:bg-primary after:opacity-0 after:shadow-[0_0_10px_rgba(0,226,255,0.45)] after:transition-all after:duration-300 hover:after:scale-x-100 hover:after:opacity-100 lg:after:inset-x-3`
     if (onHero && !isOpen) {
       return `${underlineBase} ${
         isActive ? 'text-primary after:scale-x-100 after:opacity-100' : 'text-white/90 hover:text-primary'
@@ -90,7 +99,7 @@ function Navbar() {
   const shellClass =
     onHero && !isOpen
       ? 'border-white/10 bg-slate-950/30 shadow-soft backdrop-blur-md'
-      : 'border-arc-border/80 bg-white/95 shadow-soft backdrop-blur-md'
+      : `border-arc-border/80 bg-white/95 shadow-soft backdrop-blur-md${scrolled ? ' shadow-md' : ''}`
 
   const drawerTransform =
     isRtl
@@ -159,7 +168,7 @@ function Navbar() {
             <LanguageMenu
               variant="light"
               className="relative z-[1] w-full [&>button]:!min-h-12 [&>button]:rounded-xl [&_.absolute]:!z-[110]"
-              menuAlign="bottom-center"
+              menuAlign="top-horizontal-center"
             />
           </div>
         </div>
@@ -169,7 +178,10 @@ function Navbar() {
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${shellClass}`}>
-      <nav className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
+      <nav
+        dir="ltr"
+        className="mx-auto flex w-full max-w-7xl items-center gap-3 px-4 py-3 sm:px-6 lg:px-8"
+      >
         <div className="flex w-full min-w-0 items-center justify-between gap-3 md:hidden">
           <Link to={withLang('/')} className="shrink-0" aria-label={t('nav.home')}>
             <span className="relative flex h-10 w-10 overflow-hidden rounded-xl ring-2 ring-primary/40">
@@ -200,10 +212,30 @@ function Navbar() {
         </div>
 
         <div className="hidden w-full grid-cols-[auto_1fr_auto] items-center gap-2 md:grid lg:gap-3">
-          <div className={`order-3 flex items-center justify-end ${isUzbek ? 'gap-1' : 'gap-2'}`}>
+          <Link to={withLang('/')} className="inline-flex shrink-0 justify-start" aria-label={t('nav.home')}>
+            <span className="relative flex h-10 w-10 overflow-hidden rounded-xl ring-2 ring-primary/40">
+              <img src="/arc-logo.png" alt="ARC" className="h-full w-full object-cover" />
+            </span>
+          </Link>
+
+          <ul
+            dir={isRtl ? 'rtl' : 'ltr'}
+            className={`mx-auto flex min-w-0 max-w-full flex-wrap items-center justify-center ${isUzbek ? 'gap-0 lg:gap-0.5' : 'gap-0.5 lg:gap-1'}`}
+          >
+            {navItems.map((item) => (
+              <li key={item.to} dir="auto">
+                <NavLink to={item.to} end={item.end} className={desktopLink}>
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+
+          <div className={`flex items-center justify-end ${isUzbek ? 'gap-1' : 'gap-2'}`}>
             <LanguageMenu
               variant={onHero && !isOpen ? 'hero' : 'light'}
               iconOnly
+              menuAlign="bottom-end"
               className={`transition-colors duration-300 ${
                 onHero && !isOpen ? 'text-white/90 hover:text-primary' : 'text-arc-subtext hover:text-primary'
               }`}
@@ -234,24 +266,6 @@ function Navbar() {
               </Link>
             )}
           </div>
-
-          <ul
-            className={`order-2 mx-auto flex min-w-0 max-w-full flex-wrap items-center justify-center ${isUzbek ? 'gap-0 lg:gap-0.5' : 'gap-0.5 lg:gap-1'}`}
-          >
-            {navItems.map((item) => (
-              <li key={item.to}>
-                <NavLink to={item.to} end={item.end} className={desktopLink}>
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-
-          <Link to={withLang('/')} className="order-1 inline-flex shrink-0 justify-start" aria-label={t('nav.home')}>
-            <span className="relative flex h-10 w-10 overflow-hidden rounded-xl ring-2 ring-primary/40">
-              <img src="/arc-logo.png" alt="ARC" className="h-full w-full object-cover" />
-            </span>
-          </Link>
         </div>
       </nav>
 

@@ -30,6 +30,9 @@ function Footer() {
   const appStoreUrl = 'https://apps.apple.com/cy/app/afghanistan-railway-consortium/id6759148531'
   const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.arc.arc'
   const etihadUrl = 'https://etihadamu.com/en'
+  const appleMapsPlaceUrl =
+    'https://maps.apple.com/place?address=Street%205,%20Kabul,%20Afghanistan&coordinate=34.539131,69.181473&name=Street%205&map=explore'
+  const whatsAppUrl = 'https://wa.me/93798333344'
   const quickLinksMain = [
     { label: t('nav.home'), to: withLang('/') },
     { label: t('nav.about'), to: withLang('/about') },
@@ -42,6 +45,8 @@ function Footer() {
     { label: t('nav.reservation'), to: withLang('/reservation') },
     { label: t('nav.contact'), to: withLang('/contact') },
   ]
+
+  const footerSectionTitle = 'text-sm font-bold uppercase tracking-widest text-white leading-snug'
 
   return (
     <footer className="relative mt-auto border-t border-white/10 bg-[#030b14] text-slate-400">
@@ -60,11 +65,12 @@ function Footer() {
           <p className="mt-4 overflow-hidden text-sm leading-7 text-slate-400 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
             {t('footer.aboutText')}
           </p>
-          <div className="mt-3 w-full max-w-[11rem] rounded-xl border border-white/12 bg-slate-900/50 p-2 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-glow">
+          <div className="mt-3 w-full">
             <LanguageMenu
+              anchorFullWidth
               variant="dark"
               menuAlign="bottom-center"
-              className="w-full [&>button]:!w-full [&>button]:sm:!w-full [&>button]:!justify-center [&>button]:!py-2 [&>button]:!text-xs"
+              className="[&_.language-menu-trigger-frame]:rounded-xl [&_.language-menu-trigger-frame]:border [&_.language-menu-trigger-frame]:border-slate-600 [&_.language-menu-trigger-frame]:bg-slate-900/50 [&_.language-menu-trigger-frame]:p-1 [&_.language-menu-trigger-frame]:transition-colors [&_.language-menu-trigger-frame]:hover:border-slate-500 [&_.language-menu-trigger-frame]:hover:shadow-glow [&_.language-menu-trigger-frame>button]:!w-full [&_.language-menu-trigger-frame>button]:!min-h-9 [&_.language-menu-trigger-frame>button]:!justify-between [&_.language-menu-trigger-frame>button]:!gap-2 [&_.language-menu-trigger-frame>button]:!rounded-lg [&_.language-menu-trigger-frame>button]:!border-0 [&_.language-menu-trigger-frame>button]:!bg-transparent [&_.language-menu-trigger-frame>button]:!px-3 [&_.language-menu-trigger-frame>button]:!py-2 [&_.language-menu-trigger-frame>button]:!text-xs [&_.language-menu-trigger-frame>button]:!shadow-none"
             />
           </div>
         </div>
@@ -72,7 +78,7 @@ function Footer() {
         <div className="lg:col-span-4">
           <div className="grid items-start gap-6 sm:grid-cols-2">
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-white">{t('footer.linkGroupCompany')}</h4>
+              <h4 className={footerSectionTitle}>{t('footer.linkGroupCompany')}</h4>
               <ul className="mt-3 space-y-2.5">
                 {quickLinksMain.map((item) => (
                   <li key={item.to}>
@@ -88,7 +94,7 @@ function Footer() {
               </ul>
             </div>
             <div>
-              <h4 className="whitespace-nowrap text-sm font-bold uppercase tracking-widest text-white">{t('footer.linkGroupPlatform')}</h4>
+              <h4 className={`whitespace-nowrap ${footerSectionTitle}`}>{t('footer.linkGroupPlatform')}</h4>
               <ul className="mt-3 space-y-2.5">
                 {quickLinksPlatform.map((item) => (
                   <li key={item.to}>
@@ -107,11 +113,18 @@ function Footer() {
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">{t('footer.contact')}</h3>
+          <h3 className={footerSectionTitle}>{t('footer.contact')}</h3>
           <ul className="mt-5 space-y-2.5 text-sm leading-7">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-              <span>{t('footer.location')}</span>
+              <a
+                href={appleMapsPlaceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-primary"
+              >
+                {t('footer.location')}
+              </a>
             </li>
             <li className="flex gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
@@ -121,7 +134,13 @@ function Footer() {
             </li>
             <li className="flex gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-              <a href="tel:+93798333344" className="transition-colors hover:text-primary" dir="ltr">
+              <a
+                href={whatsAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-primary"
+                dir="ltr"
+              >
                 +93 798 333 344
               </a>
             </li>
@@ -129,7 +148,7 @@ function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h3 className="mb-3 text-sm font-bold uppercase tracking-widest text-white">{t('footer.downloadApps')}</h3>
+          <h3 className={`mb-3 ${footerSectionTitle}`}>{t('footer.downloadApps')}</h3>
           <div className="ml-auto w-full max-w-md space-y-3">
             <a
               href={appStoreUrl}
