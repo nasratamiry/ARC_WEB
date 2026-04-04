@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocalizedPath, useNews } from '../hooks'
 import Seo from '../shared/components/Seo'
 import { Badge, Button, Card, PageHeader, SectionContainer } from '../shared/ui'
+import { formatGregorianDate } from '../shared/utils/dateTime'
 
 function NewsPage() {
   const { t, i18n } = useTranslation()
@@ -22,12 +23,7 @@ function NewsPage() {
   const hasNext = Boolean(data?.next)
   const hasPrevious = Boolean(data?.previous)
 
-  const formatDate = (value: string) =>
-    new Date(value).toLocaleDateString(i18n.language, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
+  const formatDate = (value: string) => formatGregorianDate(value, i18n.language, 'short')
 
   return (
     <SectionContainer>

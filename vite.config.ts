@@ -12,8 +12,18 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/api': {
-        target: 'http://192.168.0.106:8000',
+        // Keep all non-auth API routes on the same reachable backend host in dev.
+        target: 'http://167.86.71.135:8000',
         changeOrigin: true,
+      },
+      '/media': {
+        target: 'http://167.86.71.135:8000',
+        changeOrigin: true,
+      },
+      '/ws': {
+        target: 'ws://167.86.71.135:8000',
+        changeOrigin: true,
+        ws: true,
       },
     },
   },

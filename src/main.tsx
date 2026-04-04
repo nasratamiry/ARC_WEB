@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import './i18n'
+import { Toaster } from 'sonner'
 import App from './App.tsx'
 import AuthProvider from './auth/AuthProvider'
 
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <AuthProvider>
           <App />
+          <Toaster position="top-center" richColors closeButton />
         </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>

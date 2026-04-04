@@ -35,9 +35,9 @@ function AuthTextInput({
         {label}
       </label>
 
-      <div className={`relative rounded-xl border bg-white px-4 py-0.5 shadow-[0_10px_40px_-20px_rgba(0,34,51,0.08)] transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/35 ${error ? 'border-red-400' : 'border-arc-border'}`}>
+      <div className={`group arc-input-shell ${error ? 'error' : ''}`.trim()}>
         {icon ? (
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary" aria-hidden>
+          <span className="absolute left-4 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center text-slate-400 transition-colors duration-300 group-focus-within:text-primary" aria-hidden>
             {icon}
           </span>
         ) : null}
@@ -53,13 +53,13 @@ function AuthTextInput({
           maxLength={maxLength}
           onChange={onChange}
           required={required}
-          className={`h-12 w-full bg-transparent text-sm text-arc-text outline-none ${
-            icon ? 'pl-9' : ''
+          className={`arc-input-element ${
+            icon ? 'pl-10' : ''
           }`}
         />
       </div>
 
-      {error ? <p className="mt-2 text-xs text-red-600">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs font-medium text-red-600">{error}</p> : null}
     </div>
   )
 }

@@ -35,10 +35,32 @@
 
   a:focus-visible,
   button:focus-visible,
-  input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Remove browser password/clear controls that create right-side artifacts */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+
+  input[type='password']::-webkit-credentials-auto-fill-button,
+  input[type='password']::-webkit-textfield-decoration-container,
+  input[type='password']::-webkit-contacts-auto-fill-button {
+    display: none !important;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+    transition: background-color 9999s ease-out 0s;
+    caret-color: #0f172a;
   }
 }
 
@@ -52,7 +74,7 @@
   }
 
   .text-body {
-    @apply text-base leading-7 text-arc-subtext;
+    @apply text-sm leading-6 text-arc-subtext sm:text-base sm:leading-7;
   }
 
   .text-small {
@@ -67,6 +89,14 @@
     @apply border border-white/40 bg-white/70 shadow-soft backdrop-blur-md;
   }
 
+  .arc-public-bg {
+    background-image:
+      radial-gradient(1200px 540px at 8% -12%, rgba(0, 226, 255, 0.14), rgba(255, 255, 255, 0)),
+      radial-gradient(920px 500px at 92% -8%, rgba(14, 165, 233, 0.09), rgba(255, 255, 255, 0)),
+      linear-gradient(180deg, #f7fcff 0%, #ffffff 48%, #f8fbff 100%);
+    background-attachment: fixed;
+  }
+
   .animate-partners-marquee {
     animation: partners-marquee 32s linear infinite;
   }
@@ -77,6 +107,40 @@
 
   .animate-fade-in {
     animation: fade-in-up 520ms ease-out both;
+  }
+
+  .arc-input-shell {
+    @apply relative overflow-hidden rounded-2xl border border-slate-200 bg-white px-4 py-0.5 shadow-[0_8px_18px_-14px_rgba(15,23,42,0.18)] transition-all duration-300 hover:border-slate-300 focus-within:border-primary/55;
+  }
+
+  .arc-input-shell.error {
+    @apply border-red-400/90 focus-within:border-red-500;
+  }
+
+  .arc-input-element {
+    @apply h-12 w-full appearance-none bg-transparent text-[15px] font-medium tracking-[0.01em] text-slate-900 placeholder:font-normal placeholder:text-slate-400 outline-none;
+  }
+
+  .chat-shell {
+    contain: layout paint;
+  }
+
+  /* instant programmatic scroll to bottom; smooth scroll only where we call scrollIntoView({ behavior: 'smooth' }) */
+  .chat-scroll-smooth {
+    scroll-behavior: auto;
+  }
+
+  .chat-scroll-smooth::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-scroll-smooth::-webkit-scrollbar-thumb {
+    background: rgba(0, 226, 255, 0.35);
+    border-radius: 9999px;
+  }
+
+  .chat-scroll-smooth::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.12);
   }
 }
 

@@ -26,15 +26,15 @@ function SectionContainer({
         : ''
 
   const motionClass = animate
-    ? `motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        isInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+    ? `motion-safe:transition-all motion-safe:duration-600 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isInView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`
     : ''
 
   return (
     <section
       ref={ref}
-      className={`mx-auto w-full max-w-layout px-4 py-section sm:px-6 lg:px-8 ${variantClass} ${motionClass} ${className}`.trim()}
+      className={`mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-section ${variantClass} ${motionClass} ${className}`.trim()}
       {...props}
     >
       {children}

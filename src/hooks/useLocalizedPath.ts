@@ -9,7 +9,10 @@ const isSupportedLanguage = (value: string | undefined): value is SupportedLangu
 
 export const useLocalizedPath = () => {
   const { lang } = useParams<{ lang: string }>()
-  const activeLanguage: SupportedLanguage = isSupportedLanguage(lang) ? lang : 'en'
+  const stored = typeof window !== 'undefined' ? window.localStorage.getItem('arc-lang') : null
+  const storedLanguage: SupportedLanguage | null =
+    stored && isSupportedLanguage(stored) ? stored : null
+  const activeLanguage: SupportedLanguage = isSupportedLanguage(lang) ? lang : (storedLanguage ?? 'en')
 
   const withLang = useMemo(
     () => (path: string) => {

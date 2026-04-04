@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Globe } from 'lucide-react'
 import { useLocalizedPath } from '../../hooks'
 
 const languages = [
@@ -12,6 +13,8 @@ const languages = [
 type Props = {
   variant?: 'light' | 'dark' | 'hero'
   className?: string
+  iconOnly?: boolean
+  menuAlign?: 'auto' | 'right' | 'bottom-horizontal' | 'bottom-center'
 }
 
 function ChevronDown({ className = '' }: { className?: string }) {
@@ -22,7 +25,7 @@ function ChevronDown({ className = '' }: { className?: string }) {
   )
 }
 
-function LanguageMenu({ variant = 'light', className = '' }: Props) {
+function LanguageMenu({ variant = 'light', className = '', iconOnly = false, menuAlign = 'auto' }: Props) {
   const { i18n, t } = useTranslation()
   const { activeLanguage } = useLocalizedPath()
   const [open, setOpen] = useState(false)
@@ -64,37 +67,56 @@ function LanguageMenu({ variant = 'light', className = '' }: Props) {
     variant === 'dark' || variant === 'hero'
       ? 'border-white/15 bg-slate-950/80 text-white backdrop-blur-md'
       : 'border-arc-border bg-white text-arc-text'
+  const isSideBySide = menuAlign === 'right' || menuAlign === 'bottom-horizontal' || menuAlign === 'bottom-center'
+
+  const menuPositionClass =
+    menuAlign === 'right'
+      ? 'left-[calc(100%+0.75rem)] right-auto top-0 w-auto min-w-[18rem] max-w-[calc(100vw-2rem)] origin-top-left'
+      : menuAlign === 'bottom-horizontal'
+        ? 'left-0 right-auto top-[calc(100%+1rem)] w-auto min-w-[18rem] max-w-[calc(100vw-2rem)] origin-top-left'
+      : menuAlign === 'bottom-center'
+        ? 'left-1/2 right-auto top-[calc(100%+0.5rem)] w-auto min-w-[16rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 origin-top'
+      : 'left-0 right-0 top-[calc(100%+0.5rem)] sm:left-auto sm:right-0 sm:w-44 sm:origin-top-right'
 
   return (
     <div ref={rootRef} className={`relative ${className}`.trim()}>
       <button
         id={buttonId}
         type="button"
-        className={`inline-flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-primary/35 ${shell}`}
+        className={`inline-flex ${
+          iconOnly
+            ? 'h-10 w-10 shrink-0 items-center justify-center rounded-full border-0 bg-transparent p-0 leading-none text-current shadow-none hover:bg-transparent'
+            : 'w-full justify-between gap-2 rounded-2xl border px-3 py-2 text-sm'
+        } font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-primary/35 sm:w-auto ${iconOnly ? '' : shell}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
         onClick={() => setOpen((v) => !v)}
+        aria-label={t('nav.language')}
       >
-        <span>{active.label}</span>
-        <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : 'rotate-0'}`} />
+        {iconOnly ? (
+          <Globe className="h-5 w-5 align-middle" aria-hidden />
+        ) : (
+          <>
+            <span>{active.label}</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : 'rotate-0'}`} />
+          </>
+        )}
       </button>
 
-      <div
-        className={`absolute right-0 top-[calc(100%+0.5rem)] z-[60] w-44 origin-top-right transition ${
-          open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-[0.98] opacity-0'
-        }`}
-      >
+      <div className={`absolute z-[80] transition ${menuPositionClass} ${open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-[0.98] opacity-0'}`}>
         <div
           id={listboxId}
           role="listbox"
           aria-labelledby={buttonId}
           className={`overflow-hidden rounded-2xl border shadow-soft ${menuShell}`}
         >
-          <p className={`px-4 pb-2 pt-3 text-xs font-semibold uppercase tracking-[0.22em] ${variant === 'dark' || variant === 'hero' ? 'text-white/70' : 'text-arc-subtext'}`}>
-            {t('nav.language')}
-          </p>
-          <div className="pb-2">
+          {!isSideBySide ? (
+            <p className={`px-4 pb-2 pt-3 text-xs font-semibold uppercase tracking-[0.22em] ${variant === 'dark' || variant === 'hero' ? 'text-white/70' : 'text-arc-subtext'}`}>
+              {t('nav.language')}
+            </p>
+          ) : null}
+          <div className={isSideBySide ? 'flex items-center gap-1 p-2' : 'pb-2'}>
             {languages.map((lang) => {
               const selected = lang.code === activeLanguage
               return (
@@ -103,13 +125,21 @@ function LanguageMenu({ variant = 'light', className = '' }: Props) {
                   type="button"
                   role="option"
                   aria-selected={selected}
-                  className={`flex w-full items-center justify-between px-4 py-2.5 text-sm transition ${
+                  className={`${
+                    isSideBySide
+                      ? 'inline-flex items-center whitespace-nowrap rounded-xl border border-transparent px-3 py-2 text-sm'
+                      : 'flex w-full items-center justify-between px-4 py-2.5 text-sm'
+                  } transition ${
                     selected
                       ? variant === 'dark' || variant === 'hero'
-                        ? 'bg-white/10 text-white'
+                        ? isSideBySide
+                          ? 'border-primary/50 bg-primary/15 text-primary'
+                          : 'bg-white/10 text-white'
                         : 'bg-primary/10 text-arc-text'
                       : variant === 'dark' || variant === 'hero'
-                        ? 'text-white/90 hover:bg-white/10'
+                        ? isSideBySide
+                          ? 'text-white/90 hover:border-primary/40 hover:bg-white/10 hover:text-primary'
+                          : 'text-white/90 hover:bg-white/10'
                         : 'text-arc-text hover:bg-arc-muted'
                   }`}
                   onClick={() => {
@@ -121,7 +151,7 @@ function LanguageMenu({ variant = 'light', className = '' }: Props) {
                   }}
                 >
                   <span>{lang.label}</span>
-                  {selected ? <span className={variant === 'dark' || variant === 'hero' ? 'text-primary' : 'text-primary-dark'}>✓</span> : null}
+                  {selected && !isSideBySide ? <span className={variant === 'dark' || variant === 'hero' ? 'text-primary' : 'text-primary-dark'}>✓</span> : null}
                 </button>
               )
             })}

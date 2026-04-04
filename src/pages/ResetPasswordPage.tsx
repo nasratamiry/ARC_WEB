@@ -9,6 +9,7 @@ import { Button } from '../shared/ui'
 import AuthPageShell from '../auth/AuthPageShell'
 import AuthTextInput from '../auth/AuthTextInput'
 import { LockIcon } from '../auth/AuthIcons'
+import AuthErrorFeedback from '../auth/AuthErrorFeedback'
 import { motion } from 'framer-motion'
 
 function ResetPasswordPage() {
@@ -19,11 +20,10 @@ function ResetPasswordPage() {
 
   const [newPassword, setNewPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<ApiError | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  const onSubmit = async (event: FormEvent) => {
-    event.preventDefault()
+  const submitResetPassword = async () => {
     setIsSubmitting(true)
     setSubmitError(null)
     setSuccessMessage(null)
@@ -32,12 +32,17 @@ function ResetPasswordPage() {
       setSuccessMessage(result.message)
       navigate(withLang('/login'), { replace: true })
     } catch (e) {
-      if (e instanceof ApiError) setSubmitError(e.message)
-      else if (e instanceof Error) setSubmitError(e.message)
-      else setSubmitError('Reset failed. Please try again.')
+      if (e instanceof ApiError) setSubmitError(e)
+      else if (e instanceof Error) setSubmitError(new ApiError(e.message))
+      else setSubmitError(new ApiError('Reset failed. Please try again.'))
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault()
+    await submitResetPassword()
   }
 
   return (
@@ -60,8 +65,14 @@ function ResetPasswordPage() {
             onChange={(e) => setNewPassword(e.target.value)}
             required
             icon={<LockIcon />}
-            error={submitError}
+            error={submitError?.message ?? null}
           />
+
+          {submitError ? (
+            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+              <AuthErrorFeedback error={submitError} onRetry={() => void submitResetPassword()} retryDisabled={isSubmitting} />
+            </motion.div>
+          ) : null}
 
           {successMessage ? (
             <motion.p

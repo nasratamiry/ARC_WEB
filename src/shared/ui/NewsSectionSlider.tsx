@@ -24,21 +24,21 @@ function NewsSectionSlider({ items, buildPath }: NewsSectionSliderProps) {
   if (items.length === 0) return null
 
   return (
-    <div className="relative">
+    <div className="relative min-w-0">
       <div className="overflow-hidden rounded-2xl">
         <div
           className="flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {items.map((item) => (
-            <div key={item.slug} className="w-full shrink-0 px-0.5">
+            <div key={item.slug} className="w-full shrink-0 px-1 sm:px-1.5">
               <Link to={buildPath(item.slug)} className="group block">
                 <Card className="h-full overflow-hidden p-0 sm:flex sm:min-h-[280px]">
                   <div className="relative h-52 shrink-0 overflow-hidden bg-arc-muted sm:h-auto sm:w-[42%]">
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-80 sm:bg-gradient-to-r" />

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocalizedPath, useNewsDetail } from '../hooks'
 import Seo from '../shared/components/Seo'
 import { Badge, Button, Card, PageHeader, SectionContainer } from '../shared/ui'
+import { formatGregorianDate } from '../shared/utils/dateTime'
 
 function NewsDetailPage() {
   const { t, i18n } = useTranslation()
@@ -10,12 +11,7 @@ function NewsDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const { data, loading, error } = useNewsDetail(slug, { enabled: Boolean(slug) })
 
-  const formatDate = (value: string) =>
-    new Date(value).toLocaleDateString(i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+  const formatDate = (value: string) => formatGregorianDate(value, i18n.language, 'long')
 
   return (
     <SectionContainer>

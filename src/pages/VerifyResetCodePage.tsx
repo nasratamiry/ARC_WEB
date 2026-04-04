@@ -9,6 +9,7 @@ import { Button } from '../shared/ui'
 import AuthPageShell from '../auth/AuthPageShell'
 import AuthTextInput from '../auth/AuthTextInput'
 import { KeyIcon } from '../auth/AuthIcons'
+import AuthErrorFeedback from '../auth/AuthErrorFeedback'
 import { motion } from 'framer-motion'
 
 const useQuery = () => {
@@ -28,28 +29,33 @@ function VerifyResetCodePage() {
 
   const [code, setCode] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<ApiError | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const hasEmail = Boolean(email.trim())
 
-  const onSubmit = async (event: FormEvent) => {
-    event.preventDefault()
+  const submitVerifyCode = async () => {
+    const normalizedCode = code.trim().replace(/\s+/g, '')
     setIsSubmitting(true)
     setSubmitError(null)
     setSuccessMessage(null)
 
     try {
-      const result = await auth.verifyResetCode({ email: email.trim(), code })
+      const result = await auth.verifyResetCode({ email: email.trim(), code: normalizedCode })
       setSuccessMessage(result.message)
       navigate(withLang('/reset-password'), { replace: true })
     } catch (e) {
-      if (e instanceof ApiError) setSubmitError(e.message)
-      else if (e instanceof Error) setSubmitError(e.message)
-      else setSubmitError('Invalid reset code. Please try again.')
+      if (e instanceof ApiError) setSubmitError(e)
+      else if (e instanceof Error) setSubmitError(new ApiError(e.message))
+      else setSubmitError(new ApiError('Invalid reset code. Please try again.'))
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault()
+    await submitVerifyCode()
   }
 
   return (
@@ -92,8 +98,14 @@ function VerifyResetCodePage() {
               placeholder="123456"
               required
               icon={<KeyIcon />}
-              error={submitError}
+              error={submitError?.message ?? null}
             />
+
+            {submitError ? (
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                <AuthErrorFeedback error={submitError} onRetry={() => void submitVerifyCode()} retryDisabled={isSubmitting} />
+              </motion.div>
+            ) : null}
 
             {successMessage ? (
               <motion.p
@@ -106,7 +118,7 @@ function VerifyResetCodePage() {
               </motion.p>
             ) : null}
 
-            <Button type="submit" className="w-full" disabled={isSubmitting || !hasEmail || code.length !== 6}>
+            <Button type="submit" className="w-full" disabled={isSubmitting || !hasEmail || code.trim().replace(/\s+/g, '').length !== 6}>
               {isSubmitting ? t('auth.verifying') : t('auth.verify')}
             </Button>
 

@@ -11,14 +11,17 @@ function TextInput({ id, label, error, type = 'text', ...rest }: Props) {
       <label htmlFor={id} className="mb-2 block text-sm font-semibold text-arc-text">
         {label}
       </label>
-      <input
-        id={id}
-        type={type}
-        className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-arc-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/40 ${
-          error ? 'border-red-400' : 'border-arc-border'
-        }`}
-        {...rest}
-      />
+      <div className={`group arc-input-shell ${error ? 'error' : ''}`.trim()}>
+        <div className="arc-input-focus-line" aria-hidden>
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/65 to-transparent" />
+        </div>
+        <input
+          id={id}
+          type={type}
+          className="arc-input-element"
+          {...rest}
+        />
+      </div>
       {error ? <p className="mt-1 text-xs text-red-600">{error}</p> : null}
     </div>
   )

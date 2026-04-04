@@ -9,6 +9,7 @@ import { Button } from '../shared/ui'
 import AuthPageShell from '../auth/AuthPageShell'
 import AuthTextInput from '../auth/AuthTextInput'
 import { MailIcon } from '../auth/AuthIcons'
+import AuthErrorFeedback from '../auth/AuthErrorFeedback'
 import { motion } from 'framer-motion'
 
 function ForgotPasswordPage() {
@@ -19,11 +20,10 @@ function ForgotPasswordPage() {
 
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<ApiError | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  const onSubmit = async (event: FormEvent) => {
-    event.preventDefault()
+  const submitForgotPassword = async () => {
     setIsSubmitting(true)
     setSubmitError(null)
     setSuccessMessage(null)
@@ -33,12 +33,17 @@ function ForgotPasswordPage() {
       setSuccessMessage(result.message)
       navigate(`${withLang('/verify-reset-code')}?email=${encodeURIComponent(email.trim())}&message=${encodeURIComponent(result.message)}`, { replace: true })
     } catch (e) {
-      if (e instanceof ApiError) setSubmitError(e.message)
-      else if (e instanceof Error) setSubmitError(e.message)
-      else setSubmitError('Failed to start reset. Please try again.')
+      if (e instanceof ApiError) setSubmitError(e)
+      else if (e instanceof Error) setSubmitError(new ApiError(e.message))
+      else setSubmitError(new ApiError('Failed to start reset. Please try again.'))
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault()
+    await submitForgotPassword()
   }
 
   return (
@@ -69,14 +74,9 @@ function ForgotPasswordPage() {
           />
 
           {submitError ? (
-            <motion.p
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm text-red-700"
-              role="alert"
-            >
-              {submitError}
-            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+              <AuthErrorFeedback error={submitError} onRetry={() => void submitForgotPassword()} retryDisabled={isSubmitting} />
+            </motion.div>
           ) : null}
 
           {successMessage ? (

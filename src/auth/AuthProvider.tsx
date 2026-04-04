@@ -76,7 +76,10 @@ function AuthProvider({ children }: Props) {
   }, [clearSession, navigate, withLang])
 
   useEffect(() => {
-    void refreshMe()
+    const timer = window.setTimeout(() => {
+      void refreshMe()
+    }, 0)
+    return () => window.clearTimeout(timer)
   }, [refreshMe])
 
   const signup = useCallback(async (payload: authApi.SignupRequest) => {
@@ -117,12 +120,14 @@ function AuthProvider({ children }: Props) {
 
   const logout = useCallback(
     async (payload?: authApi.LogoutRequest) => {
-      try {
-        const current = getStoredAuthTokens()
-        await authApi.logout({ refresh_token: payload?.refresh_token ?? current?.refresh, fcm_token: payload?.fcm_token })
-      } finally {
-        clearSession()
-      }
+      const current = getStoredAuthTokens()
+      // Clear client session immediately so UI updates without requiring refresh.
+      clearSession()
+      void authApi
+        .logout({ refresh_token: payload?.refresh_token ?? current?.refresh, fcm_token: payload?.fcm_token })
+        .catch(() => {
+          // Ignore server logout failures after local session is already cleared.
+        })
     },
     [clearSession],
   )

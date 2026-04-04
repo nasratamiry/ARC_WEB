@@ -27,7 +27,8 @@ export default {
         sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
       },
       maxWidth: {
-        layout: '1200px',
+        // Align site container with Tailwind `max-w-7xl` (1280px) for consistent enterprise layouts
+        layout: '80rem',
       },
       boxShadow: {
         soft: '0 10px 40px -20px rgba(0, 34, 51, 0.12)',

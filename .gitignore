@@ -13,6 +13,9 @@ dist-ssr
 *.local
 .env
 
+# Local deploy bundles (do not commit)
+*.zip
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

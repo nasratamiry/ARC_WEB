@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
+import { ArrowRight, Sparkles } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import Button from './Button'
 
 export type HeroSlide = {
@@ -8,6 +10,8 @@ export type HeroSlide = {
   subtitle: string
   ctaLabel: string
   ctaTo: string
+  secondaryCtaLabel?: string
+  secondaryCtaTo?: string
   image: string
   overlay?: 'dark' | 'medium' | 'light'
 }
@@ -44,8 +48,10 @@ type HeroCarouselProps = {
 }
 
 function HeroCarousel({ slides }: HeroCarouselProps) {
+  const { i18n } = useTranslation()
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  const isRtl = i18n.dir() === 'rtl'
 
   const goTo = useCallback(
     (index: number) => {
@@ -103,21 +109,32 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
               </picture>
             </div>
             <div className={`absolute inset-0 ${overlayClass(slide.overlay)}`} aria-hidden />
-            <div className="relative z-[2] mx-auto flex min-h-[calc(100dvh-5rem)] w-full max-w-layout flex-col justify-center px-4 pb-24 pt-28 sm:px-6 lg:px-8">
+            <div className="relative z-[2] mx-auto flex min-h-[calc(100dvh-5rem)] w-full max-w-7xl flex-col justify-center px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-28 lg:px-8">
               <div
-                className={`max-w-3xl rounded-2xl bg-slate-950/28 p-5 backdrop-blur-[1.5px] sm:p-7 lg:p-8 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  isActive ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                className={`max-w-3xl rounded-2xl border border-white/10 bg-slate-950/12 p-4 shadow-soft backdrop-blur-sm sm:p-6 md:p-7 lg:p-8 transition-all duration-650 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
                 }`}
               >
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-200 sm:text-base">{slide.eyebrow}</p>
-                <h1 className="mt-5 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-[1.08]">
+                <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/55 px-3 py-1.5 text-xs font-semibold tracking-[0.14em] text-white shadow-soft backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm md:text-base">
+                  <Sparkles className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                  {slide.eyebrow}
+                </p>
+                <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-white sm:mt-5 sm:text-4xl sm:leading-tight md:text-5xl lg:text-6xl lg:leading-[1.06]">
                   {slide.title}
                 </h1>
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100 sm:text-xl sm:leading-8">{slide.subtitle}</p>
-                <div className="mt-10">
-                  <Button to={slide.ctaTo} variant="primary">
-                    {slide.ctaLabel}
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-100 sm:mt-6 sm:text-base sm:leading-7 md:text-lg md:leading-8 lg:text-xl">
+                  {slide.subtitle}
+                </p>
+                <div className="mt-7 flex w-full max-w-md flex-col gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:gap-3 md:mt-10">
+                  <Button to={slide.ctaTo} variant="primary" className="group">
+                    <span>{slide.ctaLabel}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden />
                   </Button>
+                  {slide.secondaryCtaLabel && slide.secondaryCtaTo ? (
+                    <Button to={slide.secondaryCtaTo} variant="secondary">
+                      {slide.secondaryCtaLabel}
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -130,14 +147,18 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
         role="tablist"
         aria-label="Slides"
       >
-        <div className="flex items-center gap-2 rounded-full border border-white/15 bg-gradient-to-b from-white/10 to-white/0 bg-slate-950/30 px-2.5 py-2.5 shadow-soft backdrop-blur-md">
+        <div
+          className={`flex items-center gap-2 rounded-full border border-white/15 bg-gradient-to-b from-white/10 to-white/0 bg-slate-950/30 px-2.5 py-2.5 shadow-soft backdrop-blur-md ${
+            isRtl ? 'flex-row-reverse' : ''
+          }`}
+        >
           <button
             type="button"
             aria-label="Previous slide"
-            onClick={() => goTo(active - 1)}
+            onClick={() => goTo(isRtl ? active + 1 : active - 1)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/85 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary/40"
           >
-            <ArrowIcon direction="left" />
+            <ArrowIcon direction={isRtl ? 'right' : 'left'} />
           </button>
 
           <div className="flex items-center gap-2 px-1" aria-label="Slide selector">
@@ -171,10 +192,10 @@ function HeroCarousel({ slides }: HeroCarouselProps) {
           <button
             type="button"
             aria-label="Next slide"
-            onClick={() => goTo(active + 1)}
+            onClick={() => goTo(isRtl ? active - 1 : active + 1)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/85 transition hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary/40"
           >
-            <ArrowIcon direction="right" />
+            <ArrowIcon direction={isRtl ? 'left' : 'right'} />
           </button>
         </div>
       </div>

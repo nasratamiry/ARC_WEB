@@ -5,7 +5,7 @@ import ScrollToTop from '../shared/components/ScrollToTop'
 
 function MainLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="arc-public-bg flex min-h-screen flex-col overflow-x-clip">
       <ScrollToTop />
       <a
         href="#main-content"

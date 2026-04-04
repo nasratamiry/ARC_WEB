@@ -12,7 +12,7 @@ function AuthPageShell({ eyebrow, title, description, children }: Props) {
   return (
     <div className="relative min-h-[calc(100dvh-4rem)] w-full px-4 py-10 sm:py-14">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,226,255,0.35),transparent_55%),radial-gradient(circle_at_bottom,rgba(0,226,255,0.18),transparent_52%),linear-gradient(180deg,#030b14_0%,#ffffff_120%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#061321_0%,#103042_36%,#3f7382_62%,#7ea8b2_80%,#dce8ec_100%),repeating-linear-gradient(115deg,rgba(0,226,255,0.11)_0_2px,transparent_2px_34px),repeating-linear-gradient(165deg,rgba(0,226,255,0.07)_0_1px,transparent_1px_24px)]"
         aria-hidden
       />
 
@@ -26,12 +26,14 @@ function AuthPageShell({ eyebrow, title, description, children }: Props) {
           initial={{ opacity: 0, scale: 0.99 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.55, delay: 0.08 }}
-          className="rounded-2xl border border-white/30 bg-white/90 p-6 shadow-soft backdrop-blur-md sm:p-8"
+          className="rounded-3xl border border-white/70 bg-white/96 p-6 shadow-[0_24px_70px_-34px_rgba(2,6,23,0.55)] backdrop-blur-md sm:p-10"
         >
-          <div className="text-center">
-            {eyebrow ? <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">{eyebrow}</p> : null}
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-arc-text sm:text-4xl">{title}</h1>
-            {description ? <p className="mt-3 text-body mx-auto max-w-md text-arc-subtext">{description}</p> : null}
+          <div className="text-left">
+            {eyebrow ? <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">{eyebrow}</p> : null}
+            <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-arc-text sm:text-[2.55rem]">
+              {title}
+            </h1>
+            {description ? <p className="mt-3 max-w-md text-base font-medium leading-7 text-arc-text/90">{description}</p> : null}
           </div>
 
           <div className="mt-8">{children}</div>

@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 
-const iconBase = 'h-4 w-4'
+const iconBase = 'h-5 w-5'
 
 export function MailIcon({ className = '' }: { className?: string }): ReactNode {
   return (

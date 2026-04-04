@@ -1,48 +1,46 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedPath } from '../../hooks'
+import { ExternalLink, Mail, MapPin, Phone } from 'lucide-react'
 import LanguageMenu from './LanguageMenu'
 
-function IconLinkedIn({ className }: { className?: string }) {
+function IconApple({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+      <path d="M15.7 2.2c0 1-.36 1.9-.96 2.57-.66.73-1.75 1.3-2.8 1.22-.13-.95.39-1.9.98-2.54.65-.73 1.8-1.24 2.78-1.25zM20.9 16.95c-.48 1.1-.72 1.58-1.35 2.57-.88 1.39-2.13 3.13-3.68 3.15-1.38.02-1.73-.88-3.59-.87-1.86.01-2.26.9-3.64.88-1.55-.02-2.75-1.58-3.64-2.96-2.5-3.94-2.77-8.57-1.23-10.94 1.09-1.67 2.8-2.65 4.41-2.65 1.64 0 2.68.9 4.03.9 1.31 0 2.11-.9 4.02-.9 1.44 0 2.97.79 4.05 2.15-3.52 1.95-2.95 7.12.62 8.67z" />
     </svg>
   )
 }
 
-function IconX({ className }: { className?: string }) {
+function IconGooglePlay({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  )
-}
-
-function IconFacebook({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M2.8 2.4 13.5 12 2.8 21.6c-.37-.4-.6-.96-.6-1.62V4.02c0-.66.23-1.22.6-1.62z" fill="#00A8FF" />
+      <path d="m16.9 15.2-3.4-3.2 3.4-3.2 4.1 2.3c1 .56 1 1.46 0 2.02l-4.1 2.3z" fill="#00D17B" />
+      <path d="M16.9 15.2 5.3 21.88c-.97.55-1.8.46-2.5-.28L13.5 12l3.4 3.2z" fill="#FFC107" />
+      <path d="M16.9 8.8 13.5 12 2.8 2.4c.7-.74 1.53-.83 2.5-.28L16.9 8.8z" fill="#FF4D67" />
     </svg>
   )
 }
 
 function Footer() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { withLang } = useLocalizedPath()
-  const quickLinks = [
+  const isRtl = i18n.dir() === 'rtl'
+  const appStoreUrl = 'https://apps.apple.com/cy/app/afghanistan-railway-consortium/id6759148531'
+  const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.arc.arc'
+  const etihadUrl = 'https://etihadamu.com/en'
+  const quickLinksMain = [
     { label: t('nav.home'), to: withLang('/') },
     { label: t('nav.about'), to: withLang('/about') },
     { label: t('nav.services'), to: withLang('/services') },
+    { label: t('nav.partners'), to: withLang('/partners') },
+  ]
+  const quickLinksPlatform = [
     { label: t('nav.platform'), to: withLang('/platform') },
     { label: t('nav.news'), to: withLang('/news') },
+    { label: t('nav.reservation'), to: withLang('/reservation') },
     { label: t('nav.contact'), to: withLang('/contact') },
-  ]
-
-  const social = [
-    { href: 'https://www.linkedin.com', label: 'LinkedIn', Icon: IconLinkedIn },
-    { href: 'https://x.com', label: 'X', Icon: IconX },
-    { href: 'https://www.facebook.com', label: 'Facebook', Icon: IconFacebook },
   ]
 
   return (
@@ -51,62 +49,78 @@ function Footer() {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
         aria-hidden
       />
-      <div className="mx-auto grid w-full max-w-layout gap-12 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8">
-        <div className="lg:col-span-4">
-          <div className="flex items-center gap-3">
+      <div dir={isRtl ? 'rtl' : 'ltr'} className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:gap-12 sm:px-6 sm:py-14 lg:grid-cols-12 lg:gap-10 lg:px-8">
+        <div className="lg:col-span-3">
+          <div className={`flex items-center gap-3 ${isRtl ? 'justify-start' : ''}`}>
             <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl ring-1 ring-primary/40">
               <img src="/arc-logo.png" alt="" className="h-full w-full object-cover" />
             </span>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{t('footer.aboutTitle')}</p>
           </div>
-          <p className="mt-4 text-sm leading-7 text-slate-400">{t('footer.aboutText')}</p>
-          <div className="mt-6 flex gap-3">
-            {social.map(({ href, label, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition-all duration-300 hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
+          <p className="mt-4 overflow-hidden text-sm leading-7 text-slate-400 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]">
+            {t('footer.aboutText')}
+          </p>
+          <div className="mt-3 w-full max-w-[11rem] rounded-xl border border-white/12 bg-slate-900/50 p-2 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-glow">
+            <LanguageMenu
+              variant="dark"
+              menuAlign="bottom-center"
+              className="w-full [&>button]:!w-full [&>button]:sm:!w-full [&>button]:!justify-center [&>button]:!py-2 [&>button]:!text-xs"
+            />
           </div>
         </div>
 
-        <div className="lg:col-span-3">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">{t('footer.quickLinks')}</h3>
-          <ul className="mt-5 space-y-2.5">
-            {quickLinks.map((item) => (
-              <li key={item.to}>
-                <Link
-                  to={item.to}
-                  className="text-sm text-slate-400 transition-colors duration-200 hover:text-primary"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <div className="lg:col-span-4">
+          <div className="grid items-start gap-6 sm:grid-cols-2">
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-white">{t('footer.linkGroupCompany')}</h4>
+              <ul className="mt-3 space-y-2.5">
+                {quickLinksMain.map((item) => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors duration-200 hover:text-primary"
+                    >
+                      <span className="h-1 w-1 rounded-full bg-primary/60" aria-hidden />
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="whitespace-nowrap text-sm font-bold uppercase tracking-widest text-white">{t('footer.linkGroupPlatform')}</h4>
+              <ul className="mt-3 space-y-2.5">
+                {quickLinksPlatform.map((item) => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors duration-200 hover:text-primary"
+                    >
+                      <span className="h-1 w-1 rounded-full bg-primary/60" aria-hidden />
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-2">
           <h3 className="text-sm font-bold uppercase tracking-widest text-white">{t('footer.contact')}</h3>
           <ul className="mt-5 space-y-2.5 text-sm leading-7">
-            <li className="flex gap-2">
-              <span className="text-primary" aria-hidden>
-                ●
-              </span>
+            <li className="flex gap-3">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
               <span>{t('footer.location')}</span>
             </li>
-            <li>
+            <li className="flex gap-3">
+              <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
               <a href="mailto:info@aprcrail.com" className="transition-colors hover:text-primary">
                 info@aprcrail.com
               </a>
             </li>
-            <li>
+            <li className="flex gap-3">
+              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
               <a href="tel:+93798333344" className="transition-colors hover:text-primary" dir="ltr">
                 +93 798 333 344
               </a>
@@ -114,17 +128,53 @@ function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-2">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">{t('nav.language')}</h3>
-          <div className="mt-4">
-            <LanguageMenu variant="dark" className="w-full" />
+        <div className="lg:col-span-3">
+          <h3 className="mb-3 text-sm font-bold uppercase tracking-widest text-white">{t('footer.downloadApps')}</h3>
+          <div className="ml-auto w-full max-w-md space-y-3">
+            <a
+              href={appStoreUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex w-full items-center justify-between rounded-xl border border-white/15 bg-black px-5 py-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-glow"
+            >
+              <div className={`flex items-center gap-2.5 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white">
+                  <IconApple className="h-5 w-5" />
+                </span>
+                <span className={isRtl ? 'text-right' : 'text-left'}>
+                  <span className="block text-[10px] uppercase tracking-wider text-slate-400">Download on the</span>
+                  <span className="block text-[15px] font-semibold text-white">App Store</span>
+                </span>
+              </div>
+              <ExternalLink className="h-3.5 w-3.5 text-slate-500 transition-colors group-hover:text-primary" aria-hidden />
+            </a>
+            <a
+              href={playStoreUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex w-full items-center justify-between rounded-xl border border-white/15 bg-black px-5 py-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-glow"
+            >
+              <div className={`flex items-center gap-2.5 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white">
+                  <IconGooglePlay className="h-5 w-5" />
+                </span>
+                <span className={isRtl ? 'text-right' : 'text-left'}>
+                  <span className="block text-[10px] uppercase tracking-wider text-slate-400">Get it on</span>
+                  <span className="block text-[15px] font-semibold text-white">Google Play</span>
+                </span>
+              </div>
+              <ExternalLink className="h-3.5 w-3.5 text-slate-500 transition-colors group-hover:text-primary" aria-hidden />
+            </a>
           </div>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        <p className="mx-auto w-full max-w-layout px-4 py-5 text-center text-xs text-slate-500 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} {t('footer.rights')}
+        <p className="mx-auto w-full max-w-7xl px-4 py-5 text-center text-xs text-slate-500 sm:px-6 lg:px-8">
+          © {new Date().getFullYear()} {t('footer.rights')} · {t('footer.designedBy')}{' '}
+          <a href={etihadUrl} target="_blank" rel="noreferrer" className="font-semibold text-primary transition-colors hover:text-primary-light">
+            {t('footer.etihadName')}
+          </a>
         </p>
       </div>
     </footer>

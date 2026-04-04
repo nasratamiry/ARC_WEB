@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Activity, Boxes, ShieldCheck } from 'lucide-react'
 import { useLatestNews, useLocalizedPath, usePartners } from '../hooks'
 import Seo from '../shared/components/Seo'
 import {
@@ -29,6 +30,8 @@ function HomePage() {
         subtitle: t('home.heroSubtitle'),
         ctaLabel: t('home.heroCta'),
         ctaTo: withLang('/services'),
+        secondaryCtaLabel: t('nav.platform'),
+        secondaryCtaTo: withLang('/platform'),
         image: '/hero-slide-1.png',
         overlay: 'dark',
       },
@@ -39,6 +42,8 @@ function HomePage() {
         subtitle: t('home.heroSlide2Subtitle'),
         ctaLabel: t('home.heroSlide2Cta'),
         ctaTo: withLang('/partners'),
+        secondaryCtaLabel: t('nav.contact'),
+        secondaryCtaTo: withLang('/contact'),
         image: '/hero-slide-2.png',
         overlay: 'dark',
       },
@@ -49,6 +54,8 @@ function HomePage() {
         subtitle: t('home.heroSlide3Subtitle'),
         ctaLabel: t('home.heroSlide3Cta'),
         ctaTo: withLang('/contact'),
+        secondaryCtaLabel: t('nav.services'),
+        secondaryCtaTo: withLang('/services'),
         image: '/hero-slide-3.png',
         overlay: 'dark',
       },
@@ -66,14 +73,17 @@ function HomePage() {
     {
       title: t('home.service1Title'),
       description: t('home.service1Description'),
+      Icon: Activity,
     },
     {
       title: t('home.service2Title'),
       description: t('home.service2Description'),
+      Icon: Boxes,
     },
     {
       title: t('home.service3Title'),
       description: t('home.service3Description'),
+      Icon: ShieldCheck,
     },
   ]
 
@@ -90,7 +100,7 @@ function HomePage() {
           description={t('home.aboutDescription')}
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {aboutHighlights.map((highlight) => (
             <Card key={highlight}>
               <Badge>{t('home.aboutBadge')}</Badge>
@@ -106,18 +116,22 @@ function HomePage() {
           eyebrow={t('home.servicesEyebrow')}
           title={t('home.servicesTitle')}
           description={t('home.servicesDescription')}
-          actions={<Button to={withLang('/services')} variant="secondary">{t('home.servicesAction')}</Button>}
+          actions={
+            <Button to={withLang('/services')} variant="secondary">
+              {t('home.servicesAction')}
+            </Button>
+          }
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {servicePreview.map((service) => (
             <Card key={service.title}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                  <path d="M4 19h16M4 15l4-8 4 5 4-9 4 12" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-primary/25 bg-primary/10 text-primary shadow-soft">
+                  <service.Icon className="h-5 w-5" aria-hidden />
+                </span>
+                <h3 className="text-xl font-semibold tracking-tight text-arc-text">{service.title}</h3>
               </div>
-              <h3 className="mt-4 text-xl font-semibold text-arc-text">{service.title}</h3>
               <p className="text-body mt-3">{service.description}</p>
             </Card>
           ))}
@@ -158,11 +172,15 @@ function HomePage() {
           eyebrow={t('home.latestEyebrow')}
           title={t('home.latestTitle')}
           description={t('home.latestDescription')}
-          actions={<Button to={withLang('/news')} variant="secondary">{t('home.latestAction')}</Button>}
+          actions={
+            <Button to={withLang('/news')} variant="secondary">
+              {t('home.latestAction')}
+            </Button>
+          }
         />
 
         {latestNewsLoading ? (
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {Array.from({ length: 3 }).map((_, index) => (
               <Card key={`home-news-loading-${index}`} className="animate-pulse overflow-hidden p-0">
                 <div className="h-44 bg-arc-muted" />

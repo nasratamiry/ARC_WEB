@@ -26,7 +26,7 @@ function PartnersMarquee({ partners }: PartnersMarqueeProps) {
             href={partner.website}
             target="_blank"
             rel="noreferrer"
-            className="flex min-w-[220px] items-center gap-3 rounded-2xl border border-arc-border/90 bg-white/95 px-5 py-3.5 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lift"
+            className="flex min-w-[min(220px,calc(100vw-3rem))] max-w-[min(220px,calc(100vw-3rem))] shrink-0 items-center gap-3 rounded-2xl border border-arc-border/90 bg-white/95 px-4 py-3 shadow-soft transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lift sm:px-5 sm:py-3.5"
           >
             <img
               src={partner.logo}
